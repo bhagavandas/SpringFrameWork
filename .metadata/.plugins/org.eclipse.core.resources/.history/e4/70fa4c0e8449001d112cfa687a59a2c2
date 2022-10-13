@@ -1,0 +1,14 @@
+package com.example.demo;
+
+public interface Sim {
+	
+	public void calling();
+	public void data();
+	public static void main(String[] args) {
+		Vodaphone vodaphone =new Vodaphone();
+		vodaphone.calling();
+		vodaphone.data();
+	}
+	
+
+}

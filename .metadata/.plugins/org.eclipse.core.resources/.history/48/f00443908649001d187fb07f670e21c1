@@ -1,0 +1,14 @@
+package com.example.demo;
+
+public interface Sim {
+	
+	public void calling();
+	public void data();
+	public static void main(String[] args) {
+		Sim sim =new Airtel();
+		sim.calling();
+		sim.data();
+	}
+	
+
+}
