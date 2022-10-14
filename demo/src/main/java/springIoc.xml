@@ -6,7 +6,7 @@
         
      <bean
 
-id = "sim" class = "com.example.demo.Airtel"
+id = "student" class = "com.example.demo.Airtel"
 ></bean>
 
 

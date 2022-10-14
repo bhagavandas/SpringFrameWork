@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+        
+	<bean id = "hellotune" class="com.dependencyInjection.HelloTuneService"></bean>
+    <bean id = "msg" class = "com.dependencyInjection.MsgAlertService"></bean> 
+   
+    <bean id="data" class="com.dependencyInjection.DataAlertService"></bean> 
+    <bean id="ser" class="com.dependencyInjection.Airtel">
+	<property name="service" ref="data"/>
+	
+	</bean>
+</beans>
