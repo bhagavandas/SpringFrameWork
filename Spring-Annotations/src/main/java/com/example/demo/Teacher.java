@@ -1,5 +1,12 @@
 package com.example.demo;
 
-public class Teacher {
+import org.springframework.stereotype.Component;
+
+@Component
+public interface Teacher {
+	
+	public void teach();
+	
+	
 
 }
