@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RestController"/>
-    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PostMapping"/>
     <fullyQualifiedTypeName name="org.springframework.context.support.ClassPathXmlApplicationContext"/>
     <fullyQualifiedTypeName name="org.springframework.context.annotation.Configuration"/>
@@ -29,10 +28,18 @@
     <fullyQualifiedTypeName name="org.springframework.stereotype.Repository"/>
     <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
     <fullyQualifiedTypeName name="org.springframework.boot.autoconfigure.security.SecurityProperties.User"/>
-    <fullyQualifiedTypeName name="com.example.demo.model.UserModel"/>
     <fullyQualifiedTypeName name="com.example.demo.service.IUserService"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="com.example.demo.repository.IUserRepository"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.DeleteMapping"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ResponseBody"/>
+    <fullyQualifiedTypeName name="com.example.demo.model.UserModel"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
+    <fullyQualifiedTypeName name="org.springframework.http.ResponseEntity"/>
+    <fullyQualifiedTypeName name="com.example.demo.ResponseEntity"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PutMapping"/>
 </qualifiedTypeNameHistroy>
