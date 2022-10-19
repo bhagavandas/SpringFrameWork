@@ -31,7 +31,7 @@ public class Controller {
 	@PostMapping("/addUser")
 	public ResponseEntity addUser(@RequestBody UserModel user) {
 		UserModel userModel = userService.add(user);
-		
+
 		System.out.println("User added Successfully");
 		return new ResponseEntity(userModel, "User added successfully");
 	}
@@ -42,14 +42,14 @@ public class Controller {
 //		System.out.println("User deleted Successfully");
 //		return userModel;
 //	}
-	
+
 	@DeleteMapping("/deleteUser")
 	public Optional<UserModel> deleteUser(@RequestParam int id) {
 		Optional<UserModel> userModel = userService.delete(id);
 		System.out.println("User deleted Successfully");
 		return userModel;
 	}
-	
+
 	@GetMapping("/search/{id}")
 	public Optional<UserModel> search(@PathVariable int id) {
 		Optional<UserModel> userModel2 = userService.get(id);
@@ -57,14 +57,20 @@ public class Controller {
 		return userModel2;
 	}
 	
-	@PutMapping("/updateUser/{id}")
-	public ResponseEntity updateUser(@RequestBody UserModel user, @PathVariable int id) {
-		Optional<UserModel> userModel3 = userService.save(user, id);
-		System.out.println("User updated Successfully");
-		return new ResponseEntity(userModel3, "User updated successfully");
+	@GetMapping("/search")
+	public Optional<UserModel> searchByName(@RequestParam String name) {
+		System.out.println("User got Successfully By name" + name);
+		Optional<UserModel> searchuserModel = userService.getname(name);
+		
+		return searchuserModel;
 	}
 	
 	
-	
+
+	@PutMapping("/updateUser/{id}")
+	public ResponseEntity updateUser(@RequestBody UserModel user, @PathVariable int id) {
+		UserModel userModel3 = userService.update(user, id);
+		return new ResponseEntity(userModel3, "User updated successfully");
+	}
 
 }

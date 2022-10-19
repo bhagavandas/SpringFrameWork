@@ -12,8 +12,10 @@ public interface IUserService {
 	public UserModel add(UserModel user);
 	public Optional<UserModel> delete(int id);
 	public Optional<UserModel> get(int id);
+	public Optional<UserModel> getname(String name);
 	
-	public Optional<UserModel> save(UserModel user, int id);
+	//public Optional<UserModel> save(UserModel user);
+	public UserModel update(UserModel user, int id);
 	
 	
 }

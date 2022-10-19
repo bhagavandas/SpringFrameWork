@@ -1,12 +1,12 @@
 eclipse.preferences.version=1
-org.springframework.ide.eclipse.boot.wizard.PopularityTracker.web=2
-org.springframework.ide.eclipse.boot.wizard.PreferredSelections.artifactId=Bean-Life-Cycle
+org.springframework.ide.eclipse.boot.wizard.PopularityTracker.web=3
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.artifactId=Spring-Second-Project
 org.springframework.ide.eclipse.boot.wizard.PreferredSelections.bootVersion=2.7.4
 org.springframework.ide.eclipse.boot.wizard.PreferredSelections.description=Demo project for Spring Boot
 org.springframework.ide.eclipse.boot.wizard.PreferredSelections.groupId=com.example
 org.springframework.ide.eclipse.boot.wizard.PreferredSelections.javaVersion=17
 org.springframework.ide.eclipse.boot.wizard.PreferredSelections.language=java
-org.springframework.ide.eclipse.boot.wizard.PreferredSelections.name=Bean-Life-Cycle
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.name=Spring-Second-Project
 org.springframework.ide.eclipse.boot.wizard.PreferredSelections.packageName=com.example.demo
 org.springframework.ide.eclipse.boot.wizard.PreferredSelections.packaging=jar
 org.springframework.ide.eclipse.boot.wizard.PreferredSelections.type=MAVEN

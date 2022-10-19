@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.ResponseEntity;
 import com.example.demo.model.Books;
 
 
@@ -41,16 +42,16 @@ public class BooksController {
 	}
 
 	@PostMapping("/save")
-	public Books saveBook(@RequestBody Books books) {
+	public ResponseEntity saveBook(@RequestBody Books books) {
 		Books book = booksService.saveOrUpdate(books);
 		System.out.println("Saved Successfully");
-		return book;
+		return new ResponseEntity(book, "Saved Successfully");
 	}
 
 	@PutMapping("/update")
-	public Books update(@RequestBody Books books) {
-		booksService.saveOrUpdate(books);
+	public ResponseEntity update(@RequestBody Books books) {
+		Books updatebook = booksService.saveOrUpdate(books);
 		System.out.println("Updated Successfully");
-		return books;
+		return new ResponseEntity(updatebook, "Updated Successfully");
 	}
 }

@@ -8,7 +8,7 @@ import com.example.demo.model.Books;
 
 
 @Repository
-public interface BooksRepository extends CrudRepository<Books, Integer> {
+public interface BooksRepository extends JpaRepository<Books, Integer> {
 
 
 }
