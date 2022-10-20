@@ -31,8 +31,6 @@ public class Controller {
 	@PostMapping("/addUser")
 	public ResponseEntity addUser(@RequestBody UserModel user) {
 		UserModel userModel = userService.add(user);
-
-		System.out.println("User added Successfully");
 		return new ResponseEntity(userModel, "User added successfully");
 	}
 
