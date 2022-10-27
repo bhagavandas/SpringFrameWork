@@ -12,6 +12,12 @@ import com.example.demo.model.UserModel;
 public interface IUserRepository extends JpaRepository<UserModel, Integer>{
 
 	Optional<UserModel> findByName(String name);
+	Optional<UserModel> findByEmail(String email);
+
+
+	//String getName();
+
+	void save(String name);
 
 	
 			/* JpaRepository is a JPA (Java Persistence API) specific extension of Repository. 

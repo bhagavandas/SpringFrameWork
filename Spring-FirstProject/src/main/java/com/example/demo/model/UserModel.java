@@ -13,8 +13,16 @@ public class UserModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String name;
+	private String city;
 	private String email;
 	private String password;
+	
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
 	
 	public String getPassword() {
 		return password;
