@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.ResponseEntity;
@@ -22,7 +23,7 @@ public class Controller {
 	public ResponseEntity register(@RequestBody RegistrationDTO userModel) {
 		RegistrationDTO fBUserModel = userService.register(userModel);
 		System.out.println("Added");
-		return new ResponseEntity(fBUserModel, "Added SuccessFully!!!");
+		return new ResponseEntity(fBUserModel, "Registered SuccessFully!!!");
 		
 	}
 	
@@ -31,6 +32,14 @@ public class Controller {
 		LoginDTO fBLoginUser = userService.login(loginUser);
 		System.out.println("Logged in");
 		return new ResponseEntity(fBLoginUser, "Login SuccessFully!!!");
+		
+	}
+	
+	@GetMapping("/getUserData")
+	public ResponseEntity fetchData(@RequestBody LoginDTO loginDto) {
+		LoginDTO fBLoginUser = userService.getUserByLogin(loginDto);
+		System.out.println("Fetched");
+		return new ResponseEntity(loginDto, "Fetched User SuccessFully!!!");
 		
 	}
 

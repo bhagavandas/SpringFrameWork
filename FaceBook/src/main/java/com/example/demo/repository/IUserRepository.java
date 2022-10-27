@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.DTO.LoginDTO;
+import com.example.demo.DTO.RegistrationDTO;
 import com.example.demo.model.FBUserModel;
 
 public interface IUserRepository extends JpaRepository<FBUserModel, Integer>{
@@ -14,7 +15,13 @@ public interface IUserRepository extends JpaRepository<FBUserModel, Integer>{
 
 	void save(LoginDTO loginuser);
 
-	//void get(FBUserModel loginuser);
+	//Optional<FBUserModel> find(String loginUser);
+
+	void save(RegistrationDTO loginuser);
+
+	Optional<FBUserModel> findByEmailAndPassword(String email, String Password);
+
+	
 
 	
 	

@@ -16,7 +16,14 @@ public class UserModel {
 	private String city;
 	private String email;
 	private String password;
+	private String phoneNumber;
 	
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 	public String getCity() {
 		return city;
 	}

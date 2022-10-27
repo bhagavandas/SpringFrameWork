@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.ResponseEntity;
+import com.example.demo.DTO.LoginDTO;
 import com.example.demo.DTO.RegisterDTO;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.model.UserModel;
@@ -76,6 +77,12 @@ public class Controller {
 	public ResponseEntity registerUser(@RequestBody RegisterDTO user) {
 		RegisterDTO registerDTO = userService.register(user);
 		return new ResponseEntity(registerDTO, "Registered successfully");
+	}
+	
+	@GetMapping("/getUserByLogin")
+	public ResponseEntity getUserByLogin(@RequestBody LoginDTO loginDTO) {
+		UserDTO userDTO = userService.getUserByLogin(loginDTO);
+		return new ResponseEntity(userDTO, "Fetched successfully");
 	}
 
 }

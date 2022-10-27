@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.LoginDTO;
 import com.example.demo.DTO.RegistrationDTO;
+import com.example.demo.DTO.UserDTO;
 import com.example.demo.exceptions.UserException;
 import com.example.demo.model.FBUserModel;
 import com.example.demo.repository.IUserRepository;
@@ -28,16 +29,11 @@ public class FBService implements IFBUserService {
 		}
 		FBUserModel user = mapper.map(userModel, FBUserModel.class);
 		userRepo.save(user);
-		System.out.println("Succesfully addeed");
+		System.out.println("Succesfully added");
 		return userModel;
 	}
 
-	@Override
-	public FBUserModel save(FBUserModel userModel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public LoginDTO login(LoginDTO user) {
 		Optional<FBUserModel> fbUser = userRepo.findByEmail(user.getEmail());
@@ -50,16 +46,136 @@ public class FBService implements IFBUserService {
 		return user;
 	}
 
+	
 	@Override
-	public LoginDTO get(LoginDTO loginUser) {
+	public LoginDTO fetchUser(LoginDTO user) {
+		
+		System.out.println("Debugging");
+		if (userRepo.findByEmailAndPassword(user.getEmail(), user.getPassword()).isPresent()) {
+			FBUserModel fbUser = userRepo.findByEmailAndPassword(user.getEmail(), user.getPassword()).get();
+			UserDTO loginuser = mapper.map(fbUser, UserDTO.class);
+			//userRepo.save(loginuser);
+			System.out.println("Fetched User Data Successfully");
+			return user;
+			
+		}
+		throw new UserException("Email doesn't exists, try valid email! ");
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public LoginDTO get(RegistrationDTO registerUser) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public RegistrationDTO login(RegistrationDTO registerUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public FBUserModel save(FBUserModel userModel) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
+
+//	@Override
+//	public LoginDTO get(LoginDTO loginUser) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public LoginDTO get(String email) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public LoginDTO get(LoginDTO loginUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public RegistrationDTO fetchUser(RegistrationDTO loginUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public LoginDTO getUserByLogin(LoginDTO logUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+//	@Override
+//	public LoginDTO fetchUser(LoginDTO loginUser) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+
+//	@Override
+//	public RegistrationDTO fetchUser(RegistrationDTO loginUser) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+
+//	@Override
+//	public LoginDTO fetchUser(LoginDTO loginUser) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+
+//	@Override
+//	public RegistrationDTO fetchUser(RegistrationDTO loginUser) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
 
 }

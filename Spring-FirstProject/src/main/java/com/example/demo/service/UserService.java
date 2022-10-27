@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.example.demo.ResponseEntity;
+import com.example.demo.DTO.LoginDTO;
 import com.example.demo.DTO.RegisterDTO;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.exceptions.UserException;
@@ -79,6 +81,33 @@ public class UserService implements IUserService {
 		return user;
 
 	}
+
+	@Override
+	public UserDTO getUserByLogin(LoginDTO loginDTO) {
+		Optional<UserModel> userModel = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+	if(userModel.isEmpty()) {
+		Optional<UserModel> useremail = userRepo.findByEmail(loginDTO.getEmail());
+		Optional<UserModel> userPwd = userRepo.findByPassword(loginDTO.getPassword());
+		if(useremail.isEmpty()) {
+			throw new UserException("Entered email is incorrect");
+		}
+		else if(userPwd.isEmpty()) {
+			throw new UserException("Entered password is incorrect");
+		}
+		
+		
+		//throw new UserException("Check the email and password are correct");
+	}
+	UserDTO userDTO = modelMapper.map(userModel.get(), UserDTO.class);
+	System.out.println("Successfully Fetched");
+	return userDTO;
+	
+	}
+
+	
+
+		
+	
 	
 
 }

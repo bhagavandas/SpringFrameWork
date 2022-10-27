@@ -9,6 +9,7 @@ public class RegistrationDTO {
 	private String email;
 	private String city;
 	private String password;
+	
 	public int getId() {
 		return id;
 	}
@@ -51,5 +52,10 @@ public class RegistrationDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	@Override
+	public String toString() {
+		return "RegistrationDTO [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber="
+				+ phoneNumber + ", email=" + email + ", city=" + city + ", password=" + password + "]";
+	}
+	
 }

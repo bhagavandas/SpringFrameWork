@@ -6,7 +6,15 @@ public class RegisterDTO {
 	private String email;
 	private String password;
 	private String city;
+	private String phoneNumber	;
 	
+	
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 	public String getname() {
 		return name;
 	}

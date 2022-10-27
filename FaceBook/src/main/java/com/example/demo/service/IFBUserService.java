@@ -14,9 +14,19 @@ public interface IFBUserService {
 
 	LoginDTO login(LoginDTO loginUser);
 
-	public LoginDTO get(LoginDTO loginUser);
+	public LoginDTO get(RegistrationDTO registerUser);
 
 	public LoginDTO get(String email);
+
+	public RegistrationDTO login(RegistrationDTO registerUser);
+
+	LoginDTO fetchUser(LoginDTO loginUser);
+
+	public LoginDTO get(LoginDTO loginUser);
+
+	RegistrationDTO fetchUser(RegistrationDTO loginUser);
+
+	public LoginDTO getUserByLogin(LoginDTO logUser);
 	
 	
 

@@ -59,5 +59,10 @@ public class FBUserModel {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	@Override
+	public String toString() {
+		return "FBUserModel [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber="
+				+ phoneNumber + ", email=" + email + ", city=" + city + ", password=" + password + "]";
+	}
 
 }

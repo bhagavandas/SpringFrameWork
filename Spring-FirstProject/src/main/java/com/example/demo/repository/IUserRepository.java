@@ -18,6 +18,10 @@ public interface IUserRepository extends JpaRepository<UserModel, Integer>{
 	//String getName();
 
 	void save(String name);
+	Optional<UserModel> findByEmailAndPassword(String email, String password);
+	//boolean findByEmail(boolean empty);
+	Optional<UserModel> findByPassword(String email);
+	//Optional<UserModel> findByEmail(String email);
 
 	
 			/* JpaRepository is a JPA (Java Persistence API) specific extension of Repository. 
