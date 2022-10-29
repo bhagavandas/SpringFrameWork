@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,12 +21,16 @@ import com.example.demo.DTO.RegisterDTO;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.model.UserModel;
 import com.example.demo.service.IUserService;
+import com.example.demo.utilities.JwtTokenUtil;
 
 @RestController
 public class Controller {
 
 	@Autowired
 	IUserService userService;
+	
+	@Autowired
+	JwtTokenUtil jwtTokenUtil;
 
 //	@GetMapping("/hello")
 //	public String helloWorld() {
@@ -80,9 +85,17 @@ public class Controller {
 	}
 	
 	@GetMapping("/getUserByLogin")
-	public ResponseEntity getUserByLogin(@RequestBody LoginDTO loginDTO) {
-		UserDTO userDTO = userService.getUserByLogin(loginDTO);
+	public ResponseEntity getUserByLogin(@RequestHeader String token) {
+		UserDTO userDTO = userService.getUserByLogin(token);
+		//System.out.println(jwtTokenUtil.generateToken(userDTO));
 		return new ResponseEntity(userDTO, "Fetched successfully");
+	}
+	
+	@GetMapping("/getToken")
+	public String getToken(@RequestBody LoginDTO loginDTO) {
+		String token = userService.getToken(loginDTO);
+		//System.out.println(jwtTokenUtil.generateToken(userDTO));
+		return token;
 	}
 
 }

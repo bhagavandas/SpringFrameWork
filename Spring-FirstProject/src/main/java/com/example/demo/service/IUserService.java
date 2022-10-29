@@ -9,6 +9,7 @@ import com.example.demo.DTO.LoginDTO;
 import com.example.demo.DTO.RegisterDTO;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.model.UserModel;
+import com.example.demo.utilities.JwtTokenUtil;
 
 public interface IUserService {
 
@@ -23,11 +24,15 @@ public interface IUserService {
 	public UserModel update(UserModel user, int id);
 
 	public RegisterDTO register(RegisterDTO user);
-	
-	//public LoginDTO getUserByLogin(String email, String Password);
 
-	UserDTO getUserByLogin(LoginDTO loginDTO);
+	// public LoginDTO getUserByLogin(String email, String Password);
 
-	
+	LoginDTO getUserByLogin(LoginDTO loginDTO);
+
+	//public UserDTO getToken(LoginDTO loginDTO);
+
+	public String getToken(LoginDTO loginDTO);
+
+	UserDTO getUserByLogin(String token);
 
 }

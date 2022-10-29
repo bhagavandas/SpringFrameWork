@@ -16,6 +16,7 @@ import com.example.demo.DTO.UserDTO;
 import com.example.demo.exceptions.UserException;
 import com.example.demo.model.UserModel;
 import com.example.demo.repository.IUserRepository;
+import com.example.demo.utilities.JwtTokenUtil;
 
 @Service
 public class UserService implements IUserService {
@@ -24,6 +25,8 @@ public class UserService implements IUserService {
 	IUserRepository userRepo;
 	@Autowired
 	ModelMapper modelMapper;
+	@Autowired
+	JwtTokenUtil jwtTokenUtil;
 
 	@Override
 	public UserModel add(UserModel user) {
@@ -77,37 +80,47 @@ public class UserService implements IUserService {
 		}
 		UserModel registeredUser = modelMapper.map(user, UserModel.class);
 		userRepo.save(registeredUser);
+		
 		System.out.println("Successfully registered");
 		return user;
 
 	}
 
 	@Override
-	public UserDTO getUserByLogin(LoginDTO loginDTO) {
+	public UserDTO getUserByLogin(String token) {
+		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
 		Optional<UserModel> userModel = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
-	if(userModel.isEmpty()) {
-		Optional<UserModel> useremail = userRepo.findByEmail(loginDTO.getEmail());
-		Optional<UserModel> userPwd = userRepo.findByPassword(loginDTO.getPassword());
-		if(useremail.isEmpty()) {
-			throw new UserException("Entered email is incorrect");
+		if (userModel.isEmpty()) {
+			Optional<UserModel> useremail = userRepo.findByEmail(loginDTO.getEmail());
+			Optional<UserModel> userPwd = userRepo.findByPassword(loginDTO.getPassword());
+			if (useremail.isEmpty()) {
+				throw new UserException("Entered email is incorrect");
+			} else if (userPwd.isEmpty()) {
+				throw new UserException("Entered password is incorrect");
+			}
+			// throw new UserException("Check the email and password are correct");
 		}
-		else if(userPwd.isEmpty()) {
-			throw new UserException("Entered password is incorrect");
-		}
-		
-		
-		//throw new UserException("Check the email and password are correct");
-	}
-	UserDTO userDTO = modelMapper.map(userModel.get(), UserDTO.class);
-	System.out.println("Successfully Fetched");
-	return userDTO;
-	
+		UserDTO userDTO = modelMapper.map(userModel.get(), UserDTO.class);
+		System.out.println("Successfully Fetched");
+		return userDTO;
+
 	}
 
-	
+	@Override
+	public String getToken(LoginDTO loginDTO) {
+		Optional<UserModel> userModel = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+		if (userModel.isEmpty()) {
+			throw new UserException("User Invalid!");
+				}
+		String token = jwtTokenUtil.generateToken(loginDTO);
+		System.out.println("Successfully Fetched");
+		return token;
+	}
 
-		
-	
-	
+	@Override
+	public LoginDTO getUserByLogin(LoginDTO loginDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
