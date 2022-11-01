@@ -55,9 +55,22 @@ public class JwtTokenUtil implements Serializable {
 		loginDTO.setPassword((String) claims.get("Password"));
 		//System.out.println("Details: " + loginDTO);
 		return loginDTO;
-		
+		//Book store owner, buyer
 		
 	}
 
+	public String generateToken(String email, String password) {
+//		Map<String, Object> claims = new HashMap<>();
+//		claims.put("Email", loginDTO.getEmail());
+//		claims.put("Password", loginDTO.getPassword()); //payload
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("Email", email);
+		claims.put("Password", password);
+		System.out.println("claims : " + claims);
+		System.out.println("Generated Token for : " );
+		return doGenerateToken(claims);
+	}
+	}
+
 	
-}
+

@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.DTO.LoginDTO;
+import com.example.demo.DTO.UserDTO;
 import com.example.demo.model.UserModel;
+
 
 @Repository
 public interface IUserRepository extends JpaRepository<UserModel, Integer> {
@@ -26,6 +28,10 @@ public interface IUserRepository extends JpaRepository<UserModel, Integer> {
 	Optional<UserModel> findByToken(String email);
 
 	void save(Map<String, Object> claims);
+
+	void save(UserDTO userDTO);
+
+	UserModel save(LoginDTO loginDTO);
 
 	//Optional<UserModel> findByEmailAndPassword(String email, String password);
 

@@ -5,7 +5,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.ResponseEntity;
+import com.example.demo.DTO.EmailDTO;
 import com.example.demo.DTO.LoginDTO;
+import com.example.demo.DTO.LogoutDTO;
 import com.example.demo.DTO.RegisterDTO;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.model.UserModel;
@@ -13,7 +15,7 @@ import com.example.demo.utilities.JwtTokenUtil;
 
 public interface IUserService {
 
-	public UserModel add(UserModel user);
+	public ResponseEntity add(UserModel user);
 
 	public Optional<UserModel> delete(int id);
 
@@ -25,14 +27,14 @@ public interface IUserService {
 
 	public RegisterDTO register(RegisterDTO user);
 
-	// public LoginDTO getUserByLogin(String email, String Password);
-
-	LoginDTO getUserByLogin(LoginDTO loginDTO);
-
-	//public UserDTO getToken(LoginDTO loginDTO);
-
 	public String getToken(LoginDTO loginDTO);
 
 	UserDTO getUserByLogin(String token);
+
+	UserModel updateByToken(UserModel user, String token);
+
+	public LogoutDTO logoutByToken(String token);
+
+	// public String sendMail(EmailDTO mail);
 
 }

@@ -7,6 +7,8 @@ public class UserDTO {
 	private String name;
 	private String city;
 	private String phoneNumber;
+	
+	
 
 	public String getPhoneNumber() {
 		return phoneNumber;

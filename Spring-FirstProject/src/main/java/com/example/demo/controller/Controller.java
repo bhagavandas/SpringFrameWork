@@ -16,21 +16,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.ResponseEntity;
+import com.example.demo.SpringFirstProjectApplication;
+import com.example.demo.DTO.EmailDTO;
 import com.example.demo.DTO.LoginDTO;
+import com.example.demo.DTO.LogoutDTO;
 import com.example.demo.DTO.RegisterDTO;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.model.UserModel;
 import com.example.demo.service.IUserService;
 import com.example.demo.utilities.JwtTokenUtil;
 
+
 @RestController
 public class Controller {
 
 	@Autowired
 	IUserService userService;
-	
+
 	@Autowired
 	JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	EmailDTO emailDTO;
+	
 
 //	@GetMapping("/hello")
 //	public String helloWorld() {
@@ -39,7 +46,7 @@ public class Controller {
 
 	@PostMapping("/addUser")
 	public ResponseEntity addUser(@RequestBody UserModel user) {
-		UserModel userModel = userService.add(user);
+		ResponseEntity userModel = userService.add(user);
 		return new ResponseEntity(userModel, "User added successfully");
 	}
 
@@ -83,19 +90,46 @@ public class Controller {
 		RegisterDTO registerDTO = userService.register(user);
 		return new ResponseEntity(registerDTO, "Registered successfully");
 	}
-	
-	@GetMapping("/getUserByLogin")
+
+	@GetMapping("/getUserByToken")
 	public ResponseEntity getUserByLogin(@RequestHeader String token) {
 		UserDTO userDTO = userService.getUserByLogin(token);
-		//System.out.println(jwtTokenUtil.generateToken(userDTO));
+		// System.out.println(jwtTokenUtil.generateToken(userDTO));
 		return new ResponseEntity(userDTO, "Fetched successfully");
 	}
-	
+
 	@GetMapping("/getToken")
 	public String getToken(@RequestBody LoginDTO loginDTO) {
 		String token = userService.getToken(loginDTO);
-		//System.out.println(jwtTokenUtil.generateToken(userDTO));
+		// System.out.println(jwtTokenUtil.generateToken(userDTO));
 		return token;
+	}
+//login, update, logout //java mail sender
+
+	@PutMapping("/updateUserByToken")
+	public ResponseEntity updateUserByToken(@RequestBody UserModel user, @RequestHeader String token) {
+		UserModel userModel3 = userService.updateByToken(user, token);
+		return new ResponseEntity(userModel3, "User updated successfully");
+	}
+
+	@GetMapping("/logoutUserByToken")
+	public ResponseEntity logoutUserByToken(@RequestHeader String token) {
+		LogoutDTO user = userService.logoutByToken(token);
+		
+		return new ResponseEntity(user, "User logged out successfully");
+	}
+	
+//	@PostMapping("/sendMail")
+//	public ResponseEntity sendMail(@RequestBody EmailDTO details) {
+//
+//		String status = userService.sendMail(details);
+//
+//		return new ResponseEntity(status, "Sent Mail successfully");
+//	}
+	
+	@GetMapping("/token")
+	public String UserToken(String token) {
+		return "Registered successfully";
 	}
 
 }

@@ -5,18 +5,26 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.ResponseEntity;
+import com.example.demo.DTO.EmailDTO;
 import com.example.demo.DTO.LoginDTO;
+import com.example.demo.DTO.LogoutDTO;
 import com.example.demo.DTO.RegisterDTO;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.exceptions.UserException;
 import com.example.demo.model.UserModel;
 import com.example.demo.repository.IUserRepository;
+
+import com.example.demo.utilities.JavaMailService;
 import com.example.demo.utilities.JwtTokenUtil;
+
 
 @Service
 public class UserService implements IUserService {
@@ -27,18 +35,32 @@ public class UserService implements IUserService {
 	ModelMapper modelMapper;
 	@Autowired
 	JwtTokenUtil jwtTokenUtil;
-
+	
+	@Autowired
+	JavaMailService javaMailService;
+	
+	String token;
+	
 	@Override
-	public UserModel add(UserModel user) {
-		UserModel userModel = userRepo.findById(user.getId()).orElse(null);
-		if (userModel == null) {
-			userRepo.save(user);
-			System.out.println("User added Successfully");
-			return userModel;
-		} else
-			throw new UserException("User already exists!!");
+	public ResponseEntity add(UserModel user) {
+		
+		String userMail = user.getEmail();
+		if (userRepo.findByEmail(userMail).isPresent()) {
+			throw new UserException("User already exist");
+		
+		} else {
+			token = jwtTokenUtil.generateToken(user.getEmail(), user.getPassword());
+			
+		javaMailService.sendSimpleMail(user.getEmail(),token, "verification");
+		user.setIsVerified(true);
+		
+		UserModel userModel = userRepo.save(user);
+		UserDTO addUser = modelMapper.map(userModel,UserDTO.class);
+		return new ResponseEntity(addUser, "One user added");
+			//throw new UserException("User already exists!!");
 	}
-
+	}
+	
 	@Override
 	public Optional<UserModel> delete(int id) {
 		Optional<UserModel> userModel = userRepo.findById(id);
@@ -80,12 +102,13 @@ public class UserService implements IUserService {
 		}
 		UserModel registeredUser = modelMapper.map(user, UserModel.class);
 		userRepo.save(registeredUser);
-		
+
 		System.out.println("Successfully registered");
 		return user;
 
 	}
 
+// Get user by Token or Login by using token
 	@Override
 	public UserDTO getUserByLogin(String token) {
 		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
@@ -111,16 +134,41 @@ public class UserService implements IUserService {
 		Optional<UserModel> userModel = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
 		if (userModel.isEmpty()) {
 			throw new UserException("User Invalid!");
-				}
+		}
 		String token = jwtTokenUtil.generateToken(loginDTO);
 		System.out.println("Successfully Fetched");
 		return token;
 	}
 
 	@Override
-	public LoginDTO getUserByLogin(LoginDTO loginDTO) {
-		// TODO Auto-generated method stub
-		return null;
+	public UserModel updateByToken(UserModel user, String token) {
+		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
+		
+		UserModel userDTO = modelMapper.map(user, UserModel.class);
+		userRepo.save(userDTO);
+		return userDTO;
 	}
+
+	@Override
+	public LogoutDTO logoutByToken(String token) {
+		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
+		Optional<UserModel> checkUser = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+		LogoutDTO logout = modelMapper.map(checkUser, LogoutDTO.class);
+		token  = null;
+		//if(token.isBlank()) {
+			return logout;
+		//}else
+			//throw new UserException("User Invalid!");
+		
+
+	}
+
+//	@Override
+//	public String sendMail(EmailDTO mail) {
+//		
+//		return javaMailService.sendSimpleMail(mail);
+//	}
+
+	
 
 }
