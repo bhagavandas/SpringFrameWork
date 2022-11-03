@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.example.demo.ResponseEntity;
 import com.example.demo.SpringFirstProjectApplication;
@@ -26,7 +30,6 @@ import com.example.demo.model.UserModel;
 import com.example.demo.service.IUserService;
 import com.example.demo.utilities.JwtTokenUtil;
 
-
 @RestController
 public class Controller {
 
@@ -37,7 +40,6 @@ public class Controller {
 	JwtTokenUtil jwtTokenUtil;
 	@Autowired
 	EmailDTO emailDTO;
-	
 
 //	@GetMapping("/hello")
 //	public String helloWorld() {
@@ -45,8 +47,8 @@ public class Controller {
 //	}
 
 	@PostMapping("/addUser")
-	public ResponseEntity addUser(@RequestBody UserModel user) {
-		ResponseEntity userModel = userService.add(user);
+	public ResponseEntity addUser(@RequestBody UserDTO userDTO) {
+		ResponseEntity userModel = userService.add(userDTO);
 		return new ResponseEntity(userModel, "User added successfully");
 	}
 
@@ -91,45 +93,57 @@ public class Controller {
 		return new ResponseEntity(registerDTO, "Registered successfully");
 	}
 
-	@GetMapping("/getUserByToken")
+	@GetMapping("/getUserByLogin")
 	public ResponseEntity getUserByLogin(@RequestHeader String token) {
 		UserDTO userDTO = userService.getUserByLogin(token);
-		// System.out.println(jwtTokenUtil.generateToken(userDTO));
-		return new ResponseEntity(userDTO, "Fetched successfully");
+		return new ResponseEntity(userDTO, "Got user successfully");
 	}
 
-	@GetMapping("/getToken")
-	public String getToken(@RequestBody LoginDTO loginDTO) {
+	@GetMapping("/login") // when we login, token will generate
+	public ResponseEntity getToken(@RequestBody LoginDTO loginDTO) {
 		String token = userService.getToken(loginDTO);
-		// System.out.println(jwtTokenUtil.generateToken(userDTO));
-		return token;
+		return new ResponseEntity(token, "Login successfully");
 	}
 //login, update, logout //java mail sender
 
 	@PutMapping("/updateUserByToken")
-	public ResponseEntity updateUserByToken(@RequestBody UserModel user, @RequestHeader String token) {
-		UserModel userModel3 = userService.updateByToken(user, token);
+	public ResponseEntity updateUserByToken(@RequestBody UserDTO userDTO, @RequestHeader String token) {
+		UserDTO userModel3 = userService.updateByToken(userDTO, token);
 		return new ResponseEntity(userModel3, "User updated successfully");
 	}
 
 	@GetMapping("/logoutUserByToken")
 	public ResponseEntity logoutUserByToken(@RequestHeader String token) {
-		LogoutDTO user = userService.logoutByToken(token);
-		
-		return new ResponseEntity(user, "User logged out successfully");
+
+		return new ResponseEntity(userService.logoutByToken(token), "User logged out successfully");
 	}
-	
-//	@PostMapping("/sendMail")
-//	public ResponseEntity sendMail(@RequestBody EmailDTO details) {
-//
-//		String status = userService.sendMail(details);
-//
-//		return new ResponseEntity(status, "Sent Mail successfully");
-//	}
-	
+
+	@PostMapping("/sendMail")
+	public ResponseEntity sendMail(@RequestBody EmailDTO details) {
+
+		String status = userService.sendMail(details);
+
+		return new ResponseEntity(status, "Sent Mail successfully");
+	}
+
 	@GetMapping("/token")
-	public String UserToken(String token) {
+	public String UserToken(@RequestParam String token) {
 		return "Registered successfully";
 	}
 
+	// rabbitmq in spring boot, swagger in spring boot
+
+	@RequestMapping(value = "/products", method = RequestMethod.GET)
+	public List<String> getProducts() {
+		List<String> productsList = new ArrayList<>();
+		productsList.add("Honey");
+		productsList.add("Almond");
+		return productsList;
+	}
+
+	// http://localhost:8080/swagger-ui/index.html#/
+	@RequestMapping(value = "/products", method = RequestMethod.POST)
+	public String createProduct() {
+		return "Product is saved successfully";
+	}
 }

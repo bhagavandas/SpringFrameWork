@@ -22,7 +22,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenUtil implements Serializable {
-	
+
 //	@Autowired
 //	IUserRepository userRepo;
 	LoginDTO loginDTO = new LoginDTO();
@@ -32,10 +32,10 @@ public class JwtTokenUtil implements Serializable {
 	public String generateToken(LoginDTO loginDTO) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("Email", loginDTO.getEmail());
-		claims.put("Password", loginDTO.getPassword()); //payload
-		
+		claims.put("Password", loginDTO.getPassword()); // payload
+
 		System.out.println("claims : " + claims);
-		System.out.println("Generated Token for : " );
+		// System.out.println("Generated Token for : " );
 		return doGenerateToken(claims);
 	}
 
@@ -49,14 +49,13 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	public LoginDTO deCode(String token) {
-		
-		final Map<String, Object> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody(); 
+
+		final Map<String, Object> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 		loginDTO.setEmail((String) claims.get("Email"));
 		loginDTO.setPassword((String) claims.get("Password"));
-		//System.out.println("Details: " + loginDTO);
 		return loginDTO;
-		//Book store owner, buyer
 		
+
 	}
 
 	public String generateToken(String email, String password) {
@@ -67,10 +66,7 @@ public class JwtTokenUtil implements Serializable {
 		claims.put("Email", email);
 		claims.put("Password", password);
 		System.out.println("claims : " + claims);
-		System.out.println("Generated Token for : " );
+		System.out.println("Generated Token for : ");
 		return doGenerateToken(claims);
 	}
-	}
-
-	
-
+}

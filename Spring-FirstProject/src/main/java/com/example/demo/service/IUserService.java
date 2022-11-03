@@ -15,7 +15,7 @@ import com.example.demo.utilities.JwtTokenUtil;
 
 public interface IUserService {
 
-	public ResponseEntity add(UserModel user);
+	public ResponseEntity add(UserDTO userDTO);
 
 	public Optional<UserModel> delete(int id);
 
@@ -31,10 +31,10 @@ public interface IUserService {
 
 	UserDTO getUserByLogin(String token);
 
-	UserModel updateByToken(UserModel user, String token);
+	UserDTO updateByToken(UserDTO userDTO, String token);
 
-	public LogoutDTO logoutByToken(String token);
+	public String logoutByToken(String token);
 
-	// public String sendMail(EmailDTO mail);
+	 public String sendMail(EmailDTO mail);
 
 }

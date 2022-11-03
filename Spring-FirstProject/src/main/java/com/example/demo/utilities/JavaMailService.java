@@ -41,4 +41,22 @@ public class JavaMailService {
 
 	}
 
+
+	public String sendSimpleMail(EmailDTO mail) {
+		try {
+
+			SimpleMailMessage mailMessage = new SimpleMailMessage();
+			mailMessage.setFrom(sender);
+			mailMessage.setTo(mail.getRecipient());
+			mailMessage.setText(mail.getMsgBody());
+			mailMessage.setSubject(mail.getSubject());
+
+			javaMailSender.send(mailMessage);
+			return "Mail Sent Successfully...";
+
+		} catch (Exception e) {
+			return "Error while Sending Mail";
+		}
+	}
+
 }

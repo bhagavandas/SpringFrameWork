@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.ResponseEntity;
 import com.example.demo.DTO.EmailDTO;
@@ -25,7 +26,6 @@ import com.example.demo.repository.IUserRepository;
 import com.example.demo.utilities.JavaMailService;
 import com.example.demo.utilities.JwtTokenUtil;
 
-
 @Service
 public class UserService implements IUserService {
 
@@ -35,32 +35,36 @@ public class UserService implements IUserService {
 	ModelMapper modelMapper;
 	@Autowired
 	JwtTokenUtil jwtTokenUtil;
-	
+
 	@Autowired
 	JavaMailService javaMailService;
-	
+
+	@Autowired
+	RestTemplate restTemplate;
+
 	String token;
-	
+
 	@Override
-	public ResponseEntity add(UserModel user) {
-		
+	public ResponseEntity add(UserDTO user) {
+
 		String userMail = user.getEmail();
 		if (userRepo.findByEmail(userMail).isPresent()) {
 			throw new UserException("User already exist");
-		
+
 		} else {
 			token = jwtTokenUtil.generateToken(user.getEmail(), user.getPassword());
-			
-		javaMailService.sendSimpleMail(user.getEmail(),token, "verification");
-		user.setIsVerified(true);
-		
-		UserModel userModel = userRepo.save(user);
-		UserDTO addUser = modelMapper.map(userModel,UserDTO.class);
-		return new ResponseEntity(addUser, "One user added");
-			//throw new UserException("User already exists!!");
+
+			javaMailService.sendSimpleMail(user.getEmail(), token, "verification");
+			UserModel userModel = modelMapper.map(user, UserModel.class);
+			userModel.setIsVerified(true);
+
+			userRepo.save(userModel);
+			return new ResponseEntity(user, "One user added");
+
+		}
+
 	}
-	}
-	
+
 	@Override
 	public Optional<UserModel> delete(int id) {
 		Optional<UserModel> userModel = userRepo.findById(id);
@@ -113,6 +117,21 @@ public class UserService implements IUserService {
 	public UserDTO getUserByLogin(String token) {
 		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
 		Optional<UserModel> userModel = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+		if (userModel.get().getStatus() == 1) {
+
+			UserDTO userDTO = modelMapper.map(userModel.get(), UserDTO.class);
+			userModel.get().setStatus(1);
+			System.out.println("Successfully Fetched");
+			return userDTO;
+		} else {
+			throw new UserException("Please login");
+		}
+	}
+
+	@Override
+	public String getToken(LoginDTO loginDTO) {
+		Optional<UserModel> userModel = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+
 		if (userModel.isEmpty()) {
 			Optional<UserModel> useremail = userRepo.findByEmail(loginDTO.getEmail());
 			Optional<UserModel> userPwd = userRepo.findByPassword(loginDTO.getPassword());
@@ -121,54 +140,50 @@ public class UserService implements IUserService {
 			} else if (userPwd.isEmpty()) {
 				throw new UserException("Entered password is incorrect");
 			}
-			// throw new UserException("Check the email and password are correct");
-		}
-		UserDTO userDTO = modelMapper.map(userModel.get(), UserDTO.class);
-		System.out.println("Successfully Fetched");
-		return userDTO;
-
-	}
-
-	@Override
-	public String getToken(LoginDTO loginDTO) {
-		Optional<UserModel> userModel = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
-		if (userModel.isEmpty()) {
-			throw new UserException("User Invalid!");
 		}
 		String token = jwtTokenUtil.generateToken(loginDTO);
-		System.out.println("Successfully Fetched");
-		return token;
-	}
-
-	@Override
-	public UserModel updateByToken(UserModel user, String token) {
-		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
+		// try {
+		System.out.println(userModel.get().getStatus());
 		
-		UserModel userDTO = modelMapper.map(user, UserModel.class);
-		userRepo.save(userDTO);
-		return userDTO;
+		userModel.get().setStatus(1);
+		System.out.println(userModel.get().getStatus());
+		// } catch (Exception e) {
+		// System.out.println(e);
+		// }
+		return token;
+
 	}
 
 	@Override
-	public LogoutDTO logoutByToken(String token) {
+	public UserDTO updateByToken(UserDTO userDTO, String token) {
+		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
+		UserModel userModel = modelMapper.map(userDTO, UserModel.class);
+		if (userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword()).isPresent()
+				&& userModel.getStatus()== 1) {
+			userModel.setId(userRepo.findByEmail(loginDTO.getEmail()).get().getId());
+			userModel.setIsVerified(true);
+			userModel.setStatus(1);
+			userRepo.save(userModel);
+			return userDTO;
+		} else {
+			throw new UserException("Please Login!");
+		}
+
+	}
+
+	@Override
+	public String logoutByToken(String token) {
 		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
 		Optional<UserModel> checkUser = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
-		LogoutDTO logout = modelMapper.map(checkUser, LogoutDTO.class);
-		token  = null;
-		//if(token.isBlank()) {
-			return logout;
-		//}else
-			//throw new UserException("User Invalid!");
-		
-
+		// LogoutDTO logout = modelMapper.map(checkUser, LogoutDTO.class);
+		checkUser.get().setStatus(0);
+		return "logout successful";
 	}
 
-//	@Override
-//	public String sendMail(EmailDTO mail) {
-//		
-//		return javaMailService.sendSimpleMail(mail);
-//	}
+	@Override
+	public String sendMail(EmailDTO mail) {
 
-	
+		return javaMailService.sendSimpleMail(mail);
+	}
 
 }
