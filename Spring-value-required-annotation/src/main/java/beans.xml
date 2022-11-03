@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd 
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<!-- activating the annotations -->
+	<context:annotation-config/>
+	
+	<!-- using context property of placeholder, by giving the properties file name, we are getting the data from file-->
+	<context:property-placeholder location="studentInfo.properties"/>
+	
+	<bean id="student" class="com.example.ValueRequired.Student">
+	<!--	<property name="name" value="${student.name}" /> 
+		 instead of giving values directly, we are getting the dynamic values from properties.txt file
+		<property name="interestedCourse" value="${student.interestedCourse}" />
+		<property name="hobby" value="${student.hobby}" />
+
+ -->
+
+	</bean>
+
+
+</beans>
