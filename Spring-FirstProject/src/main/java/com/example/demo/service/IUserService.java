@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -36,5 +37,7 @@ public interface IUserService {
 	public String logoutByToken(String token);
 
 	 public String sendMail(EmailDTO mail);
+
+	public List<UserDTO> getAllUser(String role);
 
 }

@@ -51,6 +51,12 @@ public class Controller {
 		ResponseEntity userModel = userService.add(userDTO);
 		return new ResponseEntity(userModel, "User added successfully");
 	}
+	
+	@RequestMapping("/getAllUsers")
+	public ResponseEntity getAllUser(@RequestParam String role){
+		List<UserDTO> userModel1 = userService.getAllUser(role);
+		return new ResponseEntity(userModel1, "Fetched users successfully");
+	}
 
 //	@DeleteMapping("/deleteUser/{id}")
 //	public Optional<UserModel> deleteUser(@PathVariable int id) {
@@ -104,7 +110,6 @@ public class Controller {
 		String token = userService.getToken(loginDTO);
 		return new ResponseEntity(token, "Login successfully");
 	}
-//login, update, logout //java mail sender
 
 	@PutMapping("/updateUserByToken")
 	public ResponseEntity updateUserByToken(@RequestBody UserDTO userDTO, @RequestHeader String token) {
@@ -130,8 +135,6 @@ public class Controller {
 	public String UserToken(@RequestParam String token) {
 		return "Registered successfully";
 	}
-
-	// rabbitmq in spring boot, swagger in spring boot
 
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	public List<String> getProducts() {

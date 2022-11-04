@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import com.example.demo.DTO.LoginDTO;
 import com.example.demo.DTO.LogoutDTO;
 import com.example.demo.DTO.RegisterDTO;
 import com.example.demo.DTO.UserDTO;
+
 import com.example.demo.exceptions.UserException;
 import com.example.demo.model.UserModel;
 import com.example.demo.repository.IUserRepository;
@@ -63,6 +66,15 @@ public class UserService implements IUserService {
 
 		}
 
+	}
+
+	public List<UserDTO> getAllUser(String role) {
+		if (role.equals("Admin"))
+			return userRepo.findAll().stream().map(user -> modelMapper.map(user, UserDTO.class))
+					.collect(Collectors.toList());
+		else {
+			throw new UserException("not admin, check your Role");
+		}
 	}
 
 	@Override
@@ -142,14 +154,10 @@ public class UserService implements IUserService {
 			}
 		}
 		String token = jwtTokenUtil.generateToken(loginDTO);
-		// try {
 		System.out.println(userModel.get().getStatus());
-		
 		userModel.get().setStatus(1);
+		userRepo.save(userModel.get());
 		System.out.println(userModel.get().getStatus());
-		// } catch (Exception e) {
-		// System.out.println(e);
-		// }
 		return token;
 
 	}
@@ -158,12 +166,16 @@ public class UserService implements IUserService {
 	public UserDTO updateByToken(UserDTO userDTO, String token) {
 		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
 		UserModel userModel = modelMapper.map(userDTO, UserModel.class);
-		if (userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword()).isPresent()
-				&& userModel.getStatus()== 1) {
-			userModel.setId(userRepo.findByEmail(loginDTO.getEmail()).get().getId());
+
+		if (userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword()).isPresent() && userRepo
+				.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword()).get().getStatus() == 1) {
+
+			userModel.setId(userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword()).get().getId());
 			userModel.setIsVerified(true);
 			userModel.setStatus(1);
 			userRepo.save(userModel);
+			System.out.println("Updated Successfully");
+
 			return userDTO;
 		} else {
 			throw new UserException("Please Login!");
@@ -175,8 +187,8 @@ public class UserService implements IUserService {
 	public String logoutByToken(String token) {
 		LoginDTO loginDTO = jwtTokenUtil.deCode(token);
 		Optional<UserModel> checkUser = userRepo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
-		// LogoutDTO logout = modelMapper.map(checkUser, LogoutDTO.class);
 		checkUser.get().setStatus(0);
+		userRepo.save(checkUser.get());
 		return "logout successful";
 	}
 

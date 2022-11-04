@@ -19,7 +19,8 @@ public class UserModel {
 	private String token;
 	private int status = 0;
 	private boolean isVerified = false;
-
+	//private Role role;
+	
 	public int getStatus() {
 		return status;
 	}
