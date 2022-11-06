@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,20 +42,27 @@ public class Controller {
 	JwtTokenUtil jwtTokenUtil;
 	@Autowired
 	EmailDTO emailDTO;
+	Logger logger = LoggerFactory.getLogger(Controller.class);
 
-//	@GetMapping("/hello")
-//	public String helloWorld() {
-//		return "Hello World!";
-//	}
+	@GetMapping("/hello")
+	public String helloWorld() {
+
+		logger.info("Inside Info");
+		logger.error("Inside Error");
+		logger.debug("Inside Debug");
+		logger.warn("Inside Warn");
+		logger.trace("Inside Trace");
+		return "Hello World!";
+	}
 
 	@PostMapping("/addUser")
 	public ResponseEntity addUser(@RequestBody UserDTO userDTO) {
 		ResponseEntity userModel = userService.add(userDTO);
 		return new ResponseEntity(userModel, "User added successfully");
 	}
-	
-	@RequestMapping("/getAllUsers")
-	public ResponseEntity getAllUser(@RequestParam String role){
+
+	@GetMapping("/getAllUsers")
+	public ResponseEntity getAllUser(@RequestParam String role) {
 		List<UserDTO> userModel1 = userService.getAllUser(role);
 		return new ResponseEntity(userModel1, "Fetched users successfully");
 	}

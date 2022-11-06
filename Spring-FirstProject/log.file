@@ -1,0 +1,41 @@
+2022-11-05 10:14:32.155  INFO 151296 --- [main] c.e.demo.SpringFirstProjectApplication   : Starting SpringFirstProjectApplication using Java 17.0.4.1 on LAPTOP-PG23OKAD with PID 151296 (D:\SpringTool\Spring-FirstProject\target\classes started by das181 in D:\SpringTool\Spring-FirstProject)
+2022-11-05 10:14:32.159 DEBUG 151296 --- [main] c.e.demo.SpringFirstProjectApplication   : Running with Spring Boot v2.7.4, Spring v5.3.23
+2022-11-05 10:14:32.161  INFO 151296 --- [main] c.e.demo.SpringFirstProjectApplication   : No active profile set, falling back to 1 default profile: "default"
+2022-11-05 10:14:33.941  INFO 151296 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2022-11-05 10:14:33.943  INFO 151296 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2022-11-05 10:14:34.000  INFO 151296 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.example.demo.repository.IUserRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2022-11-05 10:14:34.002  INFO 151296 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 46 ms. Found 0 JDBC repository interfaces.
+2022-11-05 10:14:34.021  INFO 151296 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2022-11-05 10:14:34.023  INFO 151296 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-11-05 10:14:34.087  INFO 151296 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 53 ms. Found 1 JPA repository interfaces.
+2022-11-05 10:14:35.180  INFO 151296 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-11-05 10:14:35.202  INFO 151296 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-11-05 10:14:35.202  INFO 151296 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-11-05 10:14:35.879  INFO 151296 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-11-05 10:14:35.879  INFO 151296 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3605 ms
+2022-11-05 10:14:36.215  INFO 151296 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-11-05 10:14:36.349  INFO 151296 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.11.Final
+2022-11-05 10:14:36.700  INFO 151296 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-11-05 10:14:36.912  INFO 151296 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-11-05 10:14:37.735  INFO 151296 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-11-05 10:14:37.786  INFO 151296 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-11-05 10:14:39.546  INFO 151296 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-11-05 10:14:39.570  INFO 151296 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-11-05 10:14:41.354  WARN 151296 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-11-05 10:14:42.192  WARN 151296 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2022-11-05 10:14:42.310  INFO 151296 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-11-05 10:14:42.755  INFO 151296 --- [main] c.e.demo.SpringFirstProjectApplication   : Started SpringFirstProjectApplication in 11.138 seconds (JVM running for 12.162)
+2022-11-05 10:14:56.527  INFO 151296 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-11-05 10:14:56.528  INFO 151296 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-11-05 10:14:56.531  INFO 151296 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2022-11-05 10:14:56.590  INFO 151296 --- [http-nio-8080-exec-2] com.example.demo.controller.Controller   : Inside Info
+2022-11-05 10:14:56.591 ERROR 151296 --- [http-nio-8080-exec-2] com.example.demo.controller.Controller   : Inside Error
+2022-11-05 10:14:56.591 DEBUG 151296 --- [http-nio-8080-exec-2] com.example.demo.controller.Controller   : Inside Debug
+2022-11-05 10:14:56.591  WARN 151296 --- [http-nio-8080-exec-2] com.example.demo.controller.Controller   : Inside Warn
+2022-11-05 10:14:56.591 TRACE 151296 --- [http-nio-8080-exec-2] com.example.demo.controller.Controller   : Inside Trace
+2022-11-05 10:15:57.680  INFO 151296 --- [RMI TCP Connection(11)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2022-11-05 10:15:57.692  INFO 151296 --- [RMI TCP Connection(11)-127.0.0.1] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2022-11-05 10:15:57.693  INFO 151296 --- [RMI TCP Connection(11)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2022-11-05 10:15:57.703  INFO 151296 --- [RMI TCP Connection(11)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-11-05 10:15:57.706  INFO 151296 --- [RMI TCP Connection(11)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-11-05 10:15:57.714  INFO 151296 --- [RMI TCP Connection(11)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

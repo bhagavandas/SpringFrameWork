@@ -60,7 +60,7 @@ public class UserService implements IUserService {
 			javaMailService.sendSimpleMail(user.getEmail(), token, "verification");
 			UserModel userModel = modelMapper.map(user, UserModel.class);
 			userModel.setIsVerified(true);
-
+			//userModel.setRole("Admin");
 			userRepo.save(userModel);
 			return new ResponseEntity(user, "One user added");
 

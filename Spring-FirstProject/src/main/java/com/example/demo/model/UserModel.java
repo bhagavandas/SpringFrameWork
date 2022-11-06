@@ -1,9 +1,13 @@
 package com.example.demo.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.example.demo.userEnum.Role;
 
 @Entity
 public class UserModel {
@@ -19,8 +23,20 @@ public class UserModel {
 	private String token;
 	private int status = 0;
 	private boolean isVerified = false;
-	//private Role role;
+	private Role role;
+	private String department;
+	private String gender;
+	private double salary;
+	private Date start_date;
 	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	public int getStatus() {
 		return status;
 	}
