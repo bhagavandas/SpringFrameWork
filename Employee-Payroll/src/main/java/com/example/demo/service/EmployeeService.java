@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.DTO.EmailDTO;
 import com.example.demo.DTO.LoginDTO;
 import com.example.demo.DTO.RegisterDTO;
 import com.example.demo.exceptions.UserException;
 import com.example.demo.model.EmployeeModel;
 import com.example.demo.repository.IEmpRepository;
+import com.example.demo.utilities.JavaMailService;
 import com.example.demo.utilities.JwtTokenUtil;
 
 @Service
@@ -23,13 +26,18 @@ public class EmployeeService implements IEmployeeService {
 	ModelMapper modelMapper;
 	@Autowired
 	JwtTokenUtil tokenUtil;
+	@Autowired
+	JavaMailService javaMailService;
 
 	@Override
 	public RegisterDTO register(RegisterDTO registerDTO) {
-		Optional<EmployeeModel> empModel = repo.findByEmployeeName(registerDTO.getEmployeeName());
+		Optional<EmployeeModel> empModel = repo.findByEmailAndPassword(registerDTO.getEmail(),registerDTO.getPassword());
 		if (empModel.isPresent()) {
-			throw new UserException("Employee Name already exists!!");
+			throw new UserException("Email already exists!!");
 		}
+		String token = tokenUtil.generateToken(registerDTO.getEmail(), registerDTO.getPassword());
+
+		javaMailService.sendSimpleMail(registerDTO.getEmail(), token, "verification");
 		EmployeeModel registeredemployee = modelMapper.map(registerDTO, EmployeeModel.class);
 		registeredemployee.setVerified(true);
 		repo.save(registeredemployee);
@@ -39,10 +47,10 @@ public class EmployeeService implements IEmployeeService {
 	}
 
 	@Override
-	public RegisterDTO searchByEmployeeName(String name) {
-		Optional<EmployeeModel> empModel = repo.findByEmployeeName(name);
+	public RegisterDTO searchByEmail(String email) {
+		Optional<EmployeeModel> empModel = repo.findByEmail(email);
 		if (empModel.isEmpty()) {
-			throw new UserException("Employee doesn't exist!!!");
+			throw new UserException("Email doesn't exist!!!");
 		}
 		RegisterDTO registerDTO = modelMapper.map(empModel.get(), RegisterDTO.class);
 
@@ -50,36 +58,48 @@ public class EmployeeService implements IEmployeeService {
 	}
 
 	@Override
-	public Optional<EmployeeModel> deleteEmployeeName(String employeeName) {
-		Optional<EmployeeModel> empModel = repo.findByEmployeeName(employeeName);
+	public Optional<EmployeeModel> deleteEmail(String email) {
+		Optional<EmployeeModel> empModel = repo.findByEmail(email);
 		if (empModel.isEmpty()) {
-			throw new UserException("Employee doesn't exist!!!");
+			throw new UserException("Email doesn't exist!!!");
 		}
-		repo.deleteByEmployeeName(employeeName);
+		repo.deleteByEmail(email);
 		return empModel;
 
 	}
 
 	@Override
-	public RegisterDTO updateEmployeeName(RegisterDTO employee, int employeeId) {
-		employee.setEmployeeId(employeeId);
-		return repo.save(employee);
+	public RegisterDTO updateByEmail(RegisterDTO employee, String email) {
+		
+		EmployeeModel empModel = modelMapper.map(employee, EmployeeModel.class);
+		if(repo.findByEmailAndPassword(employee.getEmail(), employee.getPassword()).isPresent() && repo.findByEmailAndPassword(employee.getEmail(), employee.getPassword()).get().getStatus()==1) {
+		
+		empModel.setVerified(true);
+		empModel.setStatus(1);
+		employee.setEmail(email);
+		repo.save(empModel);
+		return employee;
+	}
+		else {
+			throw new UserException("Please Login!");
+		}
 	}
 
 	@Override
 	public String login(LoginDTO loginDTO) {
-		Optional<EmployeeModel> empModel = repo.findByEmployeeIdAndEmployeeName(loginDTO.getEmployeeId(),
-				loginDTO.getEmployeeName());
+		Optional<EmployeeModel> empModel = repo.findByEmailAndPassword(loginDTO.getEmail(),
+				loginDTO.getPassword());
 		if (empModel.isEmpty()) {
-			Optional<EmployeeModel> empId = repo.findByEmployeeId(loginDTO.getEmployeeId());
-			Optional<EmployeeModel> empName = repo.findByEmployeeName(loginDTO.getEmployeeName());
-			if (empId.isEmpty()) {
-				throw new UserException("Entered ID is incorrect");
-			} else if (empName.isEmpty()) {
-				throw new UserException("Entered Name is incorrect");
+			Optional<EmployeeModel> empEmail = repo.findByEmail(loginDTO.getEmail());
+			Optional<EmployeeModel> empPassword = repo.findByPassword(loginDTO.getPassword());
+			if (empEmail.isEmpty()) {
+				throw new UserException("Entered Email is incorrect");
+			} else if (empPassword.isEmpty()) {
+				throw new UserException("Entered Password is incorrect");
 			}
 		}
 		String token = tokenUtil.generateToken(loginDTO);
+		
 		empModel.get().setStatus(1);
 		repo.save(empModel.get());
 		return token;
@@ -88,7 +108,7 @@ public class EmployeeService implements IEmployeeService {
 	@Override
 	public String logout(String token) {
 		LoginDTO loginDTO = tokenUtil.deCode(token);
-		Optional<EmployeeModel> checkUser = repo.findByEmployeeIdAndEmployeeName(loginDTO.getEmployeeId(), loginDTO.getEmployeeName());
+		Optional<EmployeeModel> checkUser = repo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
 		checkUser.get().setStatus(0);
 		repo.save(checkUser.get());
 		return "logout successful";
@@ -99,10 +119,10 @@ public class EmployeeService implements IEmployeeService {
 		LoginDTO loginDTO = tokenUtil.deCode(token);
 		EmployeeModel empModel = modelMapper.map(registerDTO, EmployeeModel.class);
 
-		if (repo.findByEmployeeIdAndEmployeeName(loginDTO.getEmployeeId(), loginDTO.getEmployeeName()).isPresent() && repo
-				.findByEmployeeIdAndEmployeeName(loginDTO.getEmployeeId(), loginDTO.getEmployeeName()).get().getStatus() == 1) {
+		if (repo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword()).isPresent() && repo
+				.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword()).get().getStatus() == 1) {
 
-			empModel.setEmployeeId(repo.findByEmployeeIdAndEmployeeName(loginDTO.getEmployeeId(), loginDTO.getEmployeeName()).get().getEmployeeId());
+			empModel.setEmployeeId(repo.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword()).get().getEmployeeId());
 			empModel.setVerified(true);
 			empModel.setStatus(1);
 			repo.save(empModel);
@@ -121,6 +141,12 @@ public class EmployeeService implements IEmployeeService {
 		else {
 			throw new UserException("You are not an Admin, Please check your Role");
 		}
+	}
+
+	@Override
+	public String sendMail(EmailDTO mail) {
+
+		return javaMailService.sendSimpleMail(mail);
 	}
 
 }

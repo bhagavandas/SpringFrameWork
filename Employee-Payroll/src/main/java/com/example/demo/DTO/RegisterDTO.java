@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class RegisterDTO {
 
-	private int employeeId;
+	
 	private String employeeName;
 	private String profilePic;
 	private String gender;
@@ -12,13 +12,22 @@ public class RegisterDTO {
 	private Long salary;
 	private LocalDate startDate = LocalDate.now();
 	private String notes;
+	private String email;
+	private String password;
 	
 	
-	public int getEmployeeId() {
-		return employeeId;
+	
+	public String getEmail() {
+		return email;
 	}
-	public void setEmployeeId(int employeeId) {
-		this.employeeId = employeeId;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getEmployeeName() {
 		return employeeName;

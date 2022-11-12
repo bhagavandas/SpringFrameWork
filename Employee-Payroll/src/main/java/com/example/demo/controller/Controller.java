@@ -34,22 +34,22 @@ public class Controller {
 	}
 
 	@GetMapping("/searchEmployee")
-	public ResponseEntity searchEmployee(@RequestParam String name) {
-		RegisterDTO model = employeeService.searchByEmployeeName(name);
+	public ResponseEntity searchEmployee(@RequestParam String email) {
+		RegisterDTO model = employeeService.searchByEmail(email);
 		return new ResponseEntity(model, "Fetched successfully");
 	}
 
 	@Transactional
 	@DeleteMapping("/deleteEmployee")
-	public ResponseEntity deleteEmployee(@RequestParam String employeeName) {
-		Optional<EmployeeModel> model = employeeService.deleteEmployeeName(employeeName);
+	public ResponseEntity deleteEmployee(@RequestParam String email) {
+		Optional<EmployeeModel> model = employeeService.deleteEmail(email);
 		return new ResponseEntity(model, "Deleted successfully");
 	}
 
 	@PutMapping("/updateEmployee")
-	public ResponseEntity updateEmployee(@RequestBody RegisterDTO employee, @RequestParam int employeeId) {
-		RegisterDTO register = employeeService.updateEmployeeName(employee, employeeId);
-		return new ResponseEntity(register, "Updated successfully");
+	public ResponseEntity updateEmployee(@RequestBody RegisterDTO employee, @RequestParam String email) {
+		RegisterDTO register = employeeService.updateByEmail(employee, email);
+		return new ResponseEntity(register, "Successfully updated by ID");
 	}
 
 	@GetMapping("/login")
@@ -71,6 +71,7 @@ public class Controller {
 		RegisterDTO register = employeeService.update(registerDTO, token);
 		return new ResponseEntity(register, "User updated successfully");
 	}
+	
 	
 	@GetMapping("/getAllEmployees")
 	public ResponseEntity getAllUser(@RequestParam String role) {

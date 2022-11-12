@@ -15,21 +15,21 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwtTokenUtil  {
+public class JwtTokenUtil {
 
 	@Autowired
 	IEmpRepository repo;
 	LoginDTO loginDTO = new LoginDTO();
-	 //@Value("${jwt.secret}")
+	// @Value("${jwt.secret}")
 	private String secret = "spring";
 
 	public String generateToken(LoginDTO loginDTO) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("ID", loginDTO.getEmployeeId());
-		claims.put("Employee Name", loginDTO.getEmployeeName()); // payload
+		claims.put("Email", loginDTO.getEmail());
+		claims.put("Password", loginDTO.getPassword());
 
 		System.out.println("claims : " + claims);
-		// System.out.println("Generated Token for : " );
+
 		return doGenerateToken(claims);
 	}
 
@@ -45,11 +45,9 @@ public class JwtTokenUtil  {
 	public LoginDTO deCode(String token) {
 
 		final Map<String, Object> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-		loginDTO.setEmployeeId((int) claims.get("ID"));
-		loginDTO.setEmployeeName((String) claims.get("Employee Name"));
+		loginDTO.setEmail((String) claims.get("Email"));
+		loginDTO.setPassword((String) claims.get("Password"));
 		return loginDTO;
-		
-
 	}
 
 	public String generateToken(String employeeId, String employeeName) {

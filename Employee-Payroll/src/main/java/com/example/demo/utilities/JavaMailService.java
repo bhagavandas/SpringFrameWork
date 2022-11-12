@@ -7,6 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.DTO.EmailDTO;
 import com.example.demo.DTO.LoginDTO;
 
 @Component
@@ -37,7 +38,7 @@ public class JavaMailService {
 
 	}
 
-	public String sendSimpleMail(LoginDTO mail) {
+	public String sendSimpleMail(EmailDTO mail) {
 		try {
 
 			SimpleMailMessage mailMessage = new SimpleMailMessage();

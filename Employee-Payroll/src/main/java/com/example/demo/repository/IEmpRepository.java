@@ -14,16 +14,16 @@ import com.example.demo.model.EmployeeModel;
 @Repository
 public interface IEmpRepository extends JpaRepository<EmployeeModel, Integer> {
 
-	Optional<EmployeeModel> findByEmployeeName(String employeeName);
+	Optional<EmployeeModel> findByEmail(String email);
 
 	RegisterDTO save(RegisterDTO registeredemployee);
 
-	void deleteByEmployeeName(String employeeName);
-
-	Optional<EmployeeModel> findByEmployeeIdAndEmployeeName(int employeeId, String employeeName);
-
 	void save(LoginDTO loginEmp);
 
-	Optional<EmployeeModel> findByEmployeeId(int employeeId);
+	void deleteByEmail(String email);
+
+	Optional<EmployeeModel> findByEmailAndPassword(String email, String Password);
+
+	Optional<EmployeeModel> findByPassword(String password);
 
 }

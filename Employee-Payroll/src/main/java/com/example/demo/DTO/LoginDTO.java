@@ -2,23 +2,21 @@ package com.example.demo.DTO;
 
 public class LoginDTO {
 	
-	private int employeeId;
-	private String employeeName;
+	private String email;
+	private String password;
 	
-	public int getEmployeeId() {
-		return employeeId;
+	public String getEmail() {
+		return email;
 	}
-	public void setEmployeeId(int employeeId) {
-		this.employeeId = employeeId;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public String getEmployeeName() {
-		return employeeName;
+	public String getPassword() {
+		return password;
 	}
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	
-	
 	
 
 }
